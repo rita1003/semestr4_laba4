@@ -224,7 +224,6 @@ public:
 	void fillRandom();
 
 	T scalarProduct(const Vector& other) const; //скалярное произведение
-	T vectorProduct(const Vector& other); //векторное произведение
 };
 
 template <typename T> //конструктор
@@ -251,11 +250,6 @@ T Vector<T>::scalarProduct(const Vector<T>& other) const {
 		result += data[i] * other.data[i];
 	}
 	return result;
-}
-
-template <typename T> //векторное произведение
-T Vector<T>::vectorProduct(const Vector<T>& other) {
-	return scalarProduct(other);
 }
 
 int main() {
@@ -325,10 +319,6 @@ int main() {
 	int res_scalar = vector1.scalarProduct(vector2);
 	cout << "Scalar multiplication is " << res_scalar << endl;
 
-	//векторное произведение
-
-	int res_vector = vector1.vectorProduct(vector2);
-	cout << "Vector multiplication is " << res_vector << endl;
-
 	return 0;
 }
+
