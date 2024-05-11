@@ -8,10 +8,10 @@
 В данном случае после typename указан один параметр - T. Параметр шаблона представляет произвольный
 идентификатор, в качестве которого, как правило, применяются заглавные буквы, например, T.
 
-friend - ключевое слово, используется для предоставления доступа приватным или защищенным членам 
+friend - ключевое слово, используется для предоставления доступа приватным или защищенным членам
 класса другим функциям или классам.
 
-new - оператор, выделяет место в динамической памяти для объекта и возвращает указатель на этот 
+new - оператор, выделяет место в динамической памяти для объекта и возвращает указатель на этот
 объект.
 
 Шаблон класса std::numeric_limits предоставляет стандартизированный способ запроса различных свойств
@@ -60,7 +60,7 @@ int SecondMax(T* arr, int n) {
 //задание 2. переработать класс Matrix из лабораторной 2 
 
 template <typename T>
-class Matrix { 
+class Matrix {
 private:
 
 	//в лабе 2 вместо строчки ниже была строчка int** data. Но так как мы реализуем шаблон, где
@@ -168,7 +168,7 @@ Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& matrix) {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::operator+(const Matrix<T>& matrix) const{
+Matrix<T> Matrix<T>::operator+(const Matrix<T>& matrix) const {
 	Matrix<T> result(m, n);
 	for (unsigned int i = 0; i < m; i++) {
 		for (unsigned int j = 0; j < n; j++) {
@@ -221,11 +221,10 @@ public:
 	Vector(int size); //конструктор
 	~Vector(); //деструктор
 
-	T ScalarProduct(const Vector& other) const;
-
 	void fillRandom();
 
-	T VectorProduct(const Vector& other) const;
+	T scalarProduct(const Vector& other) const; //скалярное произведение
+	T vectorProduct(const Vector& other); //векторное произведение
 };
 
 template <typename T> //конструктор
@@ -245,13 +244,18 @@ void Vector<T>::fillRandom() {
 	}
 }
 
-template <typename T>
-T Vector<T>::VectorProduct(const Vector<T>& other) const {
-	T result = T(); //конструктор по умолчанию для типа Т
-	for (int i = 0; i < size; ++i) {
+template <typename T> //скалярное произведение
+T Vector<T>::scalarProduct(const Vector<T>& other) const {
+	T result = T();
+	for (unsigned int i = 0; i < size; ++i) {
 		result += data[i] * other.data[i];
 	}
 	return result;
+}
+
+template <typename T> //векторное произведение
+T Vector<T>::vectorProduct(const Vector<T>& other) {
+	return scalarProduct(other);
 }
 
 int main() {
@@ -263,7 +267,7 @@ int main() {
 	int arr_int[] = { 54, 32, 12, 87, 98 }; //предполож. результат: 87 (index = 3)
 	float arr_float[] = { 32.5, 76.9, 4.2, 76.6, 53.5 }; //предполож. результат: 76.6 (index = 3)
 	double arr_double[] = { 54.424, 64.422, 76.436, 87.653 }; //предполож. результат: 76.436 (index = 2)
-	char arr_char[] = {'r', 'i', 't', 'o', 'c', 'h', 'k', 'a' }; //предполож. результат: r (index = 0)
+	char arr_char[] = { 'r', 'i', 't', 'o', 'c', 'h', 'k', 'a' }; //предполож. результат: r (index = 0)
 
 	cout << "For massiv integer second max has got index " << SecondMax(arr_int, 5) << endl;
 	cout << "For massiv float second max has got index " << SecondMax(arr_float, 5) << endl;
@@ -272,7 +276,7 @@ int main() {
 
 	//проверка для задания 2 
 
-	cout << endl <<"Ex. 2" << endl << endl;
+	cout << endl << "Ex. 2" << endl << endl;
 
 	Matrix<int> matrix1(5, 5);
 	matrix1.fillRandom();
@@ -316,17 +320,15 @@ int main() {
 	Vector<int> vector2(3);
 	vector2.fillRandom();
 
-	//векторное произведение
-
-	int res_1 = vector1.VectorProduct(vector2);
-	cout << "The result of vector multiplication is: " << endl;
-	cout << res_1 << endl;
-
 	//скалярное произведение 
 
+	int res_scalar = vector1.scalarProduct(vector2);
+	cout << "Scalar multiplication is " << res_scalar << endl;
 
+	//векторное произведение
 
+	int res_vector = vector1.vectorProduct(vector2);
+	cout << "Vector multiplication is " << res_vector << endl;
 
 	return 0;
 }
-
